@@ -10,10 +10,11 @@ Stussy x Timberland Interactive (collaboration with Marcin Ignac)
 https://showstudio.com/project/stussy_x_timberland/stussy_x_timberland_interactive
 
 Instructions:
-1. Shoot something with the DepthKit [tutorials](http://depthkit.tv/tutorials.html)
-1. Export your footage using "combined color per-pixel"
-1. Modify and run the included FFMPEG script create_webm.sh 
-1. Upload to /files/ 
-2. Modify Min & Max depths in the index.html
-1. Try it out
+
+- Shoot something with the DepthKit [tutorials](http://depthkit.tv/tutorials.html)
+-  Export your footage using "combined color per-pixel"
+-  Modify and run the included FFMPEG script create_webm.sh 
+-  Upload to /files/ 
+-  Modify Min & Max depths in the index.html
+-  Try it out
 
