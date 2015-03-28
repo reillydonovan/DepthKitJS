@@ -6,7 +6,6 @@
 ( function () {
 
 	var video = document.createElement( 'video' );
-	// video.muted = true;
 
 	var precision = 3;
 
@@ -35,13 +34,14 @@
 
 	}
 
-	RGBDVideo = function ( id ) {
+	RGBDVideo = function ( properties ) {
+
 
 		THREE.Object3D.call( this );
 
 		var isPlaying = false;
 
-		var imageTexture = THREE.ImageUtils.loadTexture( 'files/' + ( id + 1 ) + '.png' );
+		var imageTexture = THREE.ImageUtils.loadTexture( 'files/' + properties.name + '.png' );
 
 		var videoTexture = new THREE.Texture( video );
 		videoTexture.minFilter = THREE.LinearFilter;
@@ -54,9 +54,11 @@
 			uniforms: {
 
 				"map": { type: "t", value: imageTexture },
-				"opacity": { type: "f", value: 0.25 }
-
+				"opacity": { type: "f", value: 0.25 },
+				"mindepth" : { type : "f", value : properties.mindepth },
+				"maxdepth" : { type : "f", value : properties.maxdepth }
 			},
+
 			vertexShader: document.getElementById( 'vs' ).textContent,
 			fragmentShader: document.getElementById( 'fs' ).textContent,
 			blending: THREE.AdditiveBlending,
@@ -76,9 +78,11 @@
 			uniforms: {
 
 				"map": { type: "t", value: imageTexture },
-				"opacity": { type: "f", value: 0.25 }
-
+				"opacity": { type: "f", value: 0.25 },
+				"mindepth" : { type : "f", value : properties.mindepth },
+				"maxdepth" : { type : "f", value : properties.maxdepth }
 			},
+
 			vertexShader: document.getElementById( 'vs' ).textContent,
 			fragmentShader: document.getElementById( 'fs' ).textContent,
 			blending: THREE.AdditiveBlending,
@@ -109,40 +113,14 @@
 		background.visible = false;
 		this.add( background );
 
-		// title
 
-		var string = [
-			'TEST'
-			/*
-			'TEST2',
-			'COMMUNICATION',
-			'EXCHANGE OF IDEAS',
-			'MEDIUM',
-			'CROWDSOURCING',
-			'STORIES',
-			'PROGRAMMING',
-			'TECHNOLOGY',
-			'FUTURE'
-			*/
-		][ id ];
-
-		var geometry = new Text( string );
 		var material = new THREE.LineBasicMaterial( { color: 0xffffff, opacity: 0.25, transparent: true } );
-		var title = new THREE.Line( geometry, material, THREE.LinePieces );
-		title.position.x = - ( string.length * 3 * 4 ) / 2; 
-		title.position.y = - 330;
-		title.position.z = - 40;
-		title.scale.set( 4, 4, 4 );
-		this.add( title );
-
 
 		// public
 
 		var interval;
 
 		this.rollover = function () {
-
-			title.material.opacity = 0.75;
 
 			linesMaterial.uniforms.opacity.value = 0.75;
 			pointsMaterial.uniforms.opacity.value = 0.75;
@@ -152,8 +130,6 @@
 		this.rollout = function () {
 
 			if ( isPlaying === true ) return;
-
-			title.material.opacity = 0.25;
 
 			linesMaterial.uniforms.opacity.value = 0.25;
 			pointsMaterial.uniforms.opacity.value = 0.25;
@@ -167,12 +143,10 @@
 			progress.visible = true;
 			background.visible = true;
 
-			title.material.opacity = 0.75;
-
 			linesMaterial.uniforms.opacity.value = 0.75;
 			pointsMaterial.uniforms.opacity.value = 0.75;
 
-			video.src = 'files/' + ( id + 1 ) + '.webm';
+			video.src = 'files/' + properties.name + '.webm';
 			video.play();
 
 			interval = setInterval( function () {
@@ -199,8 +173,6 @@
 
 			progress.visible = false;
 			background.visible = false;
-
-			title.material.opacity = 0.25;
 
 			linesMaterial.uniforms.opacity.value = 0.25;
 			pointsMaterial.uniforms.opacity.value = 0.25;

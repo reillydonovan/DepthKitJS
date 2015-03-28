@@ -1,8 +1,13 @@
+/**
+ * @author mrdoob / http://mrdoob.com
+ * @modified by obviousjim / http://specular.cc
+ */
+
 var camera, cameraTarget, cameraDummy;
 var scene, scene2;
 var renderer;
 
-var angle = ( Math.PI * 2 ) / 10;
+
 var rotation = 0, rotationTarget = 0;
 
 var ray, projector, mouse;
@@ -28,52 +33,21 @@ var init = function () {
 
 	scene2 = new THREE.Scene();
 
-	//
-
-	var geometry = new THREE.Geometry();
-
-	for ( var i = 0; i < 50000; i ++ ) {
-
-		var vector = new THREE.Vector3();
-		vector.x = Math.random() - 0.5;
-		vector.y = Math.random() - 0.5;
-		vector.z = Math.random() - 0.5;
-		vector.normalize();
-		vector.multiplyScalar( Math.random() * 800 + 400 );
-
-		geometry.vertices.push( vector );
-
-	}
-
-	var material = new THREE.ParticleBasicMaterial( {
-		size: 4,
-		opacity: 0.1,
-		depthTest: false,
-		blending: THREE.AdditiveBlending,
-		transparent: true
-	} );
-
-	var particles = new THREE.ParticleSystem( geometry, material );
-	scene.add( particles );
-
-	//
-
+	angle = ( Math.PI * 2 ) / VideoFiles.length;
 	videos = [];
 	objects = [];
 
 	var geometry = new THREE.IcosahedronGeometry( 400, 0 );
 
-	for ( var i = 0; i < 1; i ++ ) {
+	for ( var i = 0; i < VideoFiles.length; i++ ) {
 
-		var video = new RGBDVideo( i );
+		var video = new RGBDVideo( VideoFiles[i] );
 		video.position.x = Math.sin( i * angle ) * 800;
 		video.position.z = Math.cos( i * angle ) * 800;
 		video.rotation.y = i * angle;
+
 		scene.add( video );
-
 		videos.push( video );
-
-		// if ( i === 0 ) video.play();
 
 		var sphere = new THREE.Mesh( geometry );
 		sphere.position.x = Math.sin( i * angle ) * 500;
@@ -81,7 +55,6 @@ var init = function () {
 		sphere.position.z = Math.cos( i * angle ) * 500;
 		sphere.updateMatrix();
 		sphere.updateMatrixWorld();
-		// scene.add( sphere );
 
 		objects.push( sphere );
 
@@ -100,15 +73,10 @@ var init = function () {
 	stats = new Stats();
 	stats.domElement.style.position = 'absolute';
 	stats.domElement.style.top = 0;
-	// document.body.appendChild( stats.domElement );
-
-	//
 
 	document.addEventListener( 'mousedown', onDocumentMouseDown, false );
 	document.addEventListener( 'mousemove', onDocumentMouseMove, false );
 	document.addEventListener( 'click', onDocumentClick, false );
-
-	//
 
 	cameraDummy.position.set( Math.sin( 0 ) * 1500, 2000, 0 );
 
@@ -187,21 +155,8 @@ var onDocumentClick = function ( event ) {
 	// fix 360
 
 	if ( end - start >= 5 ) end -= 10;
-	// if ( end - start <= -5 ) start -= 10;
 
 	rotationTarget = end;
-
-	/*
-	new TWEEN.Tween( { id: start } )
-		.to( { id: end }, 1500 )
-		.onUpdate( function () {
-
-			setCameraRotation( this.id );
-
-		} )
-		.easing( TWEEN.Easing.Exponential.InOut )
-		.start();
-	*/
 
 	CLICKED = MOUSEOVERED;
 
@@ -233,14 +188,8 @@ var animate = function () {
 	camera.position.x += ( x - camera.position.x ) * 0.1;
 	camera.position.y += ( y - camera.position.y ) * 0.1;
 
-	/*
-	cameraTarget.x += ( x - cameraTarget.x ) * 0.1;
-	cameraTarget.y += ( y - cameraTarget.y ) * 0.1;
-	*/
 
 	camera.lookAt( cameraTarget );
-
-	//
 
 	rotation += ( rotationTarget - rotation ) * 0.1;
 
