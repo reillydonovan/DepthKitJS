@@ -2,6 +2,9 @@
 A Work In Progress Library for playback of DepthKit captures using Three JS
 http://depthkit.tv
 
+Tutorial Video
+https://vimeo.com/123520067
+
 Based on two past works:
 The Aaronetrope (collaboration with Mr Doob)
 http://www.aaronkoblin.com/Aaronetrope/
